@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/style.css">
+<title>ゆるキャン△ チャットアプリ</title>
+</head>
+<body>
+<header>
+    <h3>ゆるキャン△ チャットアプリ</h3>
+</header>
+<!-- チャットメインエリア -->
+<section id="main">
+         <div class="img" ><img src="./img/yckam2.png" width="150"></div>              <!-- 左なでしこ -->
+        <div id="output" style="overflow: auto; "></div>  <!-- チャットエリア width: 650px; height: 550px;-->
+        <div class="sima" ><img src="./img/yckab1.png" width="150"></div>             <!-- 右しまリン -->
+</section>
+ <footer> <!--なるべく下に配置したかったのでフッター内に記載 -->
+    <!-- 発信者を選択 -->
+    <select id="uname" class="DB" name="example">
+        <option value="しまリン">しまリン</option>
+        <option value="なでしこ">なでしこ</option>
+        <option value="斎藤">斎藤</option>
+        <option value="大垣">大垣</option>
+        <option value="犬山">犬山</option>
+    </select>
+    <div><input id="text" class="DB" type="text" placeholder="ひとこと"></div>
+    <!-- ボタン関係 -->
+    <div>
+        <button id="send" class="DB">送信</button>
+        <button id="clear" class="DB">全削除</button>
+        <button id="delete" class="DB">選択削除</button>
+        <button id="swit" class="DB">切替</button>
+    </div>
+    <!-- 背景を選択 -->
+    <select id="bd" class="DB" name="exam">
+        <option value="01">本栖湖（昼）</option>
+        <option value="02">麗キャンプ場（昼）</option>
+        <option value="03">麗キャンプ場（夜）</option>
+        <option value="04">本栖湖（夜）</option>
+        <option value="05">EAST WOOD（夜景）</option>
+        <option value="06">高ボッチ山（夜景）</option>
+        <option value="07">カチカチ山</option>
+        <option value="08">ほっとけや温泉</option>
+        <option value="09">本栖湖（写真）</option>
+        <option value="10">ふもとっぱら（写真）</option>
+        <option value="11">陣馬山形（写真）</option>
+        <option value="12">奥浜名湖公園（写真）</option>
+    </select>
+
+
+</footer>
+<!--/ コンテンツ表示画面 -->
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- JQuery -->
+
+<!--** 以下Firebase **-->
+<script type="module"> 
+    // // Firebaseに接続する為のコード
+    // // Import the functions you need from the SDKs you need
+    // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
+    // import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved } 
+    // from "https://www.gstatic.com/firebasejs/9.2.0/firebase-database.js";
+    // // TODO: Add SDKs for Firebase products that you want to use
+    // // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // // Your web app's Firebase configuration
+    // const firebaseConfig = {
+    //   apiKey: "******************************************",
+    //   authDomain: "***************************",
+    //   projectId: "************",
+    //   storageBucket: "************************",
+    //   messagingSenderId: "*************",
+    //   appId: "***************************************"
+    // };
+  
+    //バックグラウンド切替
+
+    $("#swit").on("click",function(){
+        let bd = $("#bd").val();     
+        document.getElementById('main').style.backgroundImage = 'url("./img/yrc'+ bd +'.jpg")';
+    });
+
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app); 
+    const dbRef = ref(db,"chat");
+
+    //日時の作成
+    let now = new Date();
+    let y   = now.getFullYear();
+    let m   = now.getMonth() + 1;
+    let d   = now.getDate();
+    let h   = now.getHours();
+    let mi  = now.getMinutes();
+    let day = ( h + ':' + mi)
+
+    //送信部（Enter+Shift）
+    $("#text").on("keydown",function(e){    //キーダウン検出
+        if(e.keyCode == 13 && e.shiftKey){  //Enter+Shiftで送信
+            sousin();                       //送信関数へ
+        }
+    });
+    //送信部(ボタンクリック)
+    $("#send").on("click",sousin);          //送信ボタンで送信関数へ
+    
+    //送信関数
+    function sousin(){                      //自作送信関数
+        window.location.reload();           //ページ更新してコメント消去
+        let name = $("#uname").val();       //一度別の変数に代入
+        if(name == "しまリン"){             //しまリン検出
+            let no = 1;                     //ナンバー付与  １
+            const msg ={
+                numbr : no,                 //番号送信
+                uname : name,               //名前送信
+                text  : $("#text").val(),   //コメント送信
+                time  : day                 //日時送信
+            }
+            const newPostRef = push(dbRef);//ユニークキーを生成
+            set(newPostRef,msg);
+        }else if(name == "なでしこ"){       //なでしこ  ↓以下ナンバー以外同じ
+            let no = 2;
+            const msg ={
+                numbr : no,
+                uname : name,
+                text  : $("#text").val(),
+                time  : day 
+            }
+            const newPostRef = push(dbRef);//ユニークキーを生成
+            set(newPostRef,msg);
+        }else if(name == "斎藤"){           //斎藤
+            let no = 3;
+            const msg ={
+                numbr : no,
+                uname : name,
+                text  : $("#text").val(),
+                time  : day 
+            }
+            const newPostRef = push(dbRef);//ユニークキーを生成
+            set(newPostRef,msg);
+        }else if(name == "大垣"){           //大垣
+            let no = 4;
+            const msg ={
+                numbr : no,
+                uname : name,
+                text  : $("#text").val(),
+                time  : day 
+            }
+            const newPostRef = push(dbRef);//ユニークキーを生成
+            set(newPostRef,msg);
+        }else{                              //犬山
+            let no = 5;
+            const msg ={
+                numbr : no,
+                uname : name,
+                text  : $("#text").val(),
+                time  : day 
+            }
+            const newPostRef = push(dbRef);//ユニークキーを生成
+            set(newPostRef,msg);
+        }
+    }
+
+    //受信部
+    onChildAdded(dbRef,function(data){
+        const msg = data.val();
+        const key = data.key;
+        const checkBox = `<input type="checkbox" id="${key}" class="item" name="delete">`;
+        let h = 0;
+
+       
+            if(msg.numbr == 1){
+                    h = '<div class="right">';
+                    h += '<div class="box">'+ msg.text+checkBox +'</div>';      //コメントの受信
+                    h += '<div class="time">'+ msg.time;                        //日時の受信                      
+                    h += '<br>';
+                    h += '<div class="rin_icon"><img src="./img/yckas'+ msg.numbr +'.png"/ width = "60"></div></div>';
+                        //送信時に付与したナンバーから、一致する画像名をもつ画像を貼り付け
+                    h += '</div>';
+
+            }else{
+                    h = '<div class="left">';
+                    h +='<div class="time">'+ msg.time;                         //日時の受信
+                    h += '<br>';
+                        //↓送信時に付与したナンバーから、一致する画像名をもつ画像を貼り付け
+                    h += '<div class="ot_icon"><img src="./img/yckas'+ msg.numbr +'.png"/ width = "60"></div></div>';
+                    h += '<p class="box">'+msg.text+checkBox+'</p>';            //コメントの受信
+                    h += '</div>';
+            }
+          
+            $("#output").append(`<div id="${'Box' + key}">${h}</div>`);         // ID:outputにあぺんど
+    });
+
+    //Allクリアコード                       
+    $("#clear").on("click",function(){
+        remove(ref(db,"chat"));             //細川さんのアドバイスをそのまま採用
+        alert("すべて削除しました。");      //削除時にアラーム
+        window.location.reload();           //ページの更新
+    });
+
+
+    //選択したものを削除コード
+    $("#delete").on("click", function () {                      // ID：deleteをクリックしたら動作
+        $('input[name="delete"]:checked').each(function () {    // name = deleteのinput要素がチェックされているものに動作
+            remove(ref(db, "chat/" + $(this)[0].id));           // chat/ユニークキーの
+        });
+    });
+
+    onChildRemoved(dbRef, function (data) { // firebase上のchildが削除された時、firebaseにおけるそのユニークキーのデータに対して動作
+        const key = data.key;               // firebaseのユニークキー内のデータのkeyを変数keyに入力
+        $('#Box' + key).remove();           // 
+    });
+
+</script>
+
+</body>
+</html>

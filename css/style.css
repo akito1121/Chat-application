@@ -1,0 +1,89 @@
+body{
+    width: 1024px;
+    background-image:url(../img/yc_bg.png);
+    margin: 50px auto;
+}
+#main{
+    background-image:url(../img/yrc01.jpg) ;
+    height: 576px;
+    width: 1024px;
+    border-radius: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-between;
+}
+header{
+    padding: 10px;
+    text-align: center;
+    color: #00b7de;
+    font-size: 50px;
+    font-weight: 600;
+}
+#output{
+    -ms-overflow-style: none;    /* IE, Edge 対応 */
+    scrollbar-width: none;       /* Firefox 対応 */
+}
+  
+#output::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+    display:none;
+}
+
+.img {
+    padding-top: 40px;
+    padding-left: 20px;
+}
+.sima {
+    padding-top: 330px;
+    padding-right: 20px;
+}
+.right{
+    display: flex;
+    align-items: center;
+    padding-left: 350px;
+    float: right;
+    text-align: center;
+    margin: 5px;
+}
+.left{
+    display: flex;
+    align-items: center;
+    padding-right: 350px;
+    float: left;
+    text-align: center;
+    margin: 5px;
+}
+.box{
+    width: auto;
+    height: auto;
+    margin-left: 10px;
+    margin-top: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 0px ivory;
+    border-radius: 5px;
+    border: 1.5px solid ivory;
+    font-family: system-ui;
+    font-size: 25px;
+}
+.item{
+    padding-top: 5px;
+}
+footer{
+    display: flex;
+    margin: 5px auto;
+    margin-left: 322px;
+}
+#fpanel{
+    display: flex;
+    justify-content: center;
+}
+#fpanel img{
+    width: 20px;
+    height: 20px;
+}
+.DB{
+    margin: 0 3px;
+}
+#text{
+    height: 20px;
+}
